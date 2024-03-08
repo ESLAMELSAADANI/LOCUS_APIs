@@ -24,14 +24,20 @@ class EventController extends Controller
 
     public function getEventsByDate(Request $request, $date)
     {
-        $event = Event::whereDate('from', $date)->first();
+        // Retrieve all events on the specified date
+        $events = Event::whereDate('from', $date)->get();
 
-        if (!$event) {
-            return response()->json(['message' => 'No event found for the specified date'], 404);
+        // Check if no events were found
+        if ($events->isEmpty()) {
+            return response()->json(['message' => 'No events found for the specified date'], 404);
         }
 
-        $event->image = Storage::url('images/' . $event->image);
+        // Iterate over the events to modify the image path
+        foreach ($events as $event) {
+            $event->image = Storage::url('images/' . $event->image);
+        }
 
-        return response()->json(['event' => $event]);
+        // Return the events
+        return response()->json(['events' => $events]);
     }
 }

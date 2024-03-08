@@ -17,6 +17,21 @@ class User extends Authenticatable
      *
      * @var array<int, string>
      */
+    public function photos()
+    {
+        return $this->hasMany(Photo::class);
+    }
+
+    public function likes()
+    {
+        return $this->hasMany(Like::class);
+    }
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
+
     protected $fillable = [
         'name',
         'email',
